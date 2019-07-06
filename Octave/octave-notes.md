@@ -182,7 +182,7 @@ Initialised matrix/vector:
 
   >>
 ```
-You can also use the a Gaussian random variable:
+You can also use the Gaussian random variable:
 ``` Octave
   >> randn(1, 3)
   ans =
@@ -241,5 +241,209 @@ The 'size' command gives you the dimensions of a vector - note this function ret
 ```
 The number of rows and columns of a given matrix can be found as follows:
 ``` Octave
-  >> 
+  >> T = ones(2, 3)
+  T =
+
+   1   1   1
+   1   1   1
+
+  >> size(T,1) % num of rows
+  ans =  2
+  >> size(T,2) % num of columns
+  ans =  3
+  >>
 ```
+The size of the largest dimension can be found by using the function 'length':
+``` Octave
+  >> length(T) % size of largest dim of T
+  ans =  3
+  >>
+```
+To load in some data, first locate to the directory containing the data and then the following:
+``` Octave
+  >> load some-data.dat % or...
+  >> load('some-data.dat') % this is equiv
+```
+The second one simply converts the file name to a string.
+
+To see which variables are currently being stored in memory, use the 'who' command:
+``` ocatve
+  >> who
+  Variables in the current scope:
+
+  I    T    ans  sz   w
+
+  >>
+```
+and for a more detailed output containing types and precision, use the 'whos' command:
+``` Octave
+  >> whos
+  Variables in the current scope:
+
+     Attr Name        Size                     Bytes  Class
+     ==== ====        ====                     =====  =====
+          I           4x4                         32  double
+          T           2x3                         48  double
+          ans         1x41                        41  char
+          sz          1x2                         16  double
+          w           1x10000                  80000  double
+
+  Total is 10065 elements using 80137 bytes
+
+  >>
+```
+To remove a variable from memory (deallocate), simply use the 'clear var' command:
+``` Octave
+  >> clear T
+  >> whos
+  Variables in the current scope:
+
+     Attr Name        Size                     Bytes  Class
+     ==== ====        ====                     =====  =====
+          I           4x4                         32  double
+          ans         1x41                        41  char
+          sz          1x2                         16  double
+          w           1x10000                  80000  double
+
+  Total is 10059 elements using 80089 bytes
+
+  >>
+```
+Alternatively, 'clear' by itself will delete all variables from the workspace.
+
+To save data, say for example a vector, simply use the command 'save filename.extension var -options':
+``` octave
+  >> data = rand(1, 10)
+  data =
+
+     0.91028   0.28995   0.80792   0.92347   0.80171   0.88368   0.66139   0.69487   0.74583   0.91403
+
+  >> save some-data.dat data
+  >> save some-data.txt data -ascii
+  >>
+```
+Other extensions, such as .mat for MATLAB can be used (saves in binary format). The -ascii flag saves the data as raw data, whereas without, it also contains other information, such as creation data, variable name, data type ect.
+
+Data can be indexed by using var(x,y) for index (x,y) of data var:
+``` Octave
+  >> V = [1 2; 3 4; 5 6]
+  V =
+
+     1   2
+     3   4
+     5   6
+
+  >> V(3,2)
+  ans =  6
+  >> V(1,1)
+  ans =  1
+  >>
+```
+Or, you can select entire columns and rows using colon:
+``` Octave
+  >> V(:,1)
+  ans =
+
+     1
+     3
+     5
+
+  >> V(:,2)
+  ans =
+
+     2
+     4
+     6
+
+  >>
+```
+You can also specify certain columns/rows, for example:
+``` octave
+  >> V([1 3],:)
+  ans =
+
+     1   2
+     5   6
+
+  >> V([1 2], [2])
+  ans =
+
+     2
+     4
+
+  >>
+```
+You can assign entire columns/rows:
+``` octave
+  >> V(:, 2) = [7; 8; 9]
+  V =
+
+     1   7
+     3   8
+     5   9
+
+  >>
+```
+You can also append:
+``` octave
+>> V = [V, [10; 11; 12]]
+  V =
+
+      1    7   10
+      3    8   11
+      5    9   12
+
+  >>
+```
+Special function, places all elements in a matrix into a column vector:
+``` octave
+  >> V(:) % all elements go into column vector
+  ans =
+
+      1
+      3
+      5
+      7
+      8
+      9
+     10
+     11
+     12
+
+  >>
+```
+Horizontal (space or ,) and vertical (;) concatenation:
+``` octave
+  >> M = [1 2; 3 4; 5 6]
+  M =
+
+     1   2
+     3   4
+     5   6
+
+  >> N = 3*M
+  N =
+
+      3    6
+      9   12
+     15   18
+
+  >> O = [M N]
+  O =
+
+      1    2    3    6
+      3    4    9   12
+      5    6   15   18
+
+  >> O = [M; N]
+  O =
+
+      1    2
+      3    4
+      5    6
+      3    6
+      9   12
+     15   18
+
+  >>
+'''
